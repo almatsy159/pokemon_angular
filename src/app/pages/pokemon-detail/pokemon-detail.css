@@ -1,0 +1,85 @@
+.content {
+
+    display : flex;
+}
+
+.pokemon-card {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.pokemon-basics {
+    display: flex;
+    flex-direction: column;
+}
+.pokemon-basics h2 {
+ align-self: center;
+}
+
+.pokemon-basics img{
+    width :400px;
+    height: 400px;
+}
+.pokemon-info {
+    display: flex;
+}
+
+.pokemon-types{
+    display: flex;
+    justify-content: space-evenly;
+
+}
+.pokemon-types img {
+    width : 120px;
+    height: 120px;
+}
+
+.stat {
+    margin-bottom: 10px;
+}
+
+.label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.bar-container {
+    background: #ddd;
+    border-radius: 8px;
+    width: 300px;
+    height: 20px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: #4caf50;
+    transition: width 0.5s ease;
+}
+.pokemon-others{
+    display: flex;
+    justify-content: space-between;
+}
+
+.multiplier {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.multiplier * img {
+    width: 50px;
+    height: 50px;
+
+}
+
+.actions{
+    display: flex;
+    flex:2;
+    flex-direction: column;
+}
+
+.info {
+    flex:6
+}

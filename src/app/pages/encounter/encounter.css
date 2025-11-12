@@ -1,0 +1,215 @@
+.pokemon-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+/* .pokemon-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+} */
+
+.encounter-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.team-card:hover {
+    transform: translateY(+5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.pokemon-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.pokemon-card h4 {
+    margin: 10px 0 5px;
+    font-size: 1.1rem;
+}
+
+/* .starter-slots {
+    display: flex;
+    gap: 15px;
+} */
+
+.type-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: white;
+}
+
+.type-badge[data-type="Normal"] {
+    background: #A8A77A;
+}
+
+.type-badge[data-type="Feu"] {
+    background: #EE8130;
+}
+
+.type-badge[data-type="Eau"] {
+    background: #6390F0;
+}
+
+.type-badge[data-type="Électrik"] {
+    background: #F7D02C;
+}
+
+.type-badge[data-type="Plante"] {
+    background: #7AC74C;
+}
+
+.type-badge[data-type="Glace"] {
+    background: #96D9D6;
+}
+
+.type-badge[data-type="Combat"] {
+    background: #C22E28;
+}
+
+.type-badge[data-type="Poison"] {
+    background: #A33EA1;
+}
+
+.type-badge[data-type="Sol"] {
+    background: #E2BF65;
+}
+
+.type-badge[data-type="Vol"] {
+    background: #A98FF3;
+}
+
+.type-badge[data-type="Psy"] {
+    background: #F95587;
+}
+
+.type-badge[data-type="Insecte"] {
+    background: #A6B91A;
+}
+
+.type-badge[data-type="Roche"] {
+    background: #B6A136;
+}
+
+.type-badge[data-type="Spectre"] {
+    background: #735797;
+}
+
+.type-badge[data-type="Dragon"] {
+    background: #6F35FC;
+}
+
+.type-badge[data-type="Ténèbres"] {
+    background: #705746;
+}
+
+.type-badge[data-type="Acier"] {
+    background: #B7B7CE;
+}
+
+.type-badge[data-type="Fée"] {
+    background: #D685AD;
+}
+
+.badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.types {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 10px 0;
+    min-height: 24px;
+}
+
+.foot-encounter {
+    display: flex;
+    padding-top: 10px;
+
+}
+
+.team {
+    display: flex;
+    flex: 7;
+
+}
+
+.action {
+    justify-content: flex-end;
+    align-items: flex-end;
+    flex: 1
+}
+
+.pokeball {
+    height: 50px;
+    width: 50px;
+}
+
+.pokeball:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, .6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+}
+
+.evolution img{
+    width: 100px;
+    height: 100px;
+}
+
+.evolution{
+    display: flex;
+    justify-content: space-evenly;
+    border-width: 2px;
+    box-shadow: 5px 2px 7px rgba(0, 0, 0, 0.5);
+}
+
+.popup button {
+    margin-top: 10px;
+    justify-self: center;
+    align-self: center;
+}
+
+.minipoke {
+    width: 35px;
+    height: 35px;
+}
+
+.poke-ball-mon {
+    display: flex;
+    flex-direction: column;
+}

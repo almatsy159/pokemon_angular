@@ -1,0 +1,58 @@
+<main>
+    <div class="pokemon-card encounter-card" routerLink="/layout">
+
+        <img [src]="pokemonToFight()?.image" [alt]="pokemonToFight()?.name" />
+        <h4>{{ pokemonToFight()?.name }}</h4>
+        <div class="types">
+            @for (type of pokemonToFight()?.apiTypes; track type.name) {
+            <span class="type-badge" [attr.data-type]="type.name">
+                {{ type.name }}
+            </span>
+            }
+        </div>
+    </div>
+
+
+    <div class="pokemon-card team-card" routerLink="/layout">
+
+        <img [src]="gameService.team()[current_index()].image" [alt]="gameService.team()[current_index()].name" />
+        <h4>{{ gameService.team()[current_index()].name }}</h4>
+        <div class="types">
+            @for (type of gameService.team()[current_index()].apiTypes; track type.name) {
+            <span class="type-badge" [attr.data-type]="type.name">
+                {{ type.name }}
+            </span>
+            }
+        </div>
+    </div>
+
+
+
+    <div class="foot-encounter">
+        <div class="team">
+            @for (pokemon of gameService.team();track $index){
+            <div>
+                @if(current_index() == $index){
+                <img class="pokeball" src="/open_ball_bg.png" alt="open_pokeball" title="{{pokemon.name}}">
+                }@else{
+                <img class="pokeball" src="/closed_ball_bg.png" alt="close_pokeball" title="{{pokemon.name}}" (click)="changePokemon(pokemon.id)">
+                }
+            </div>
+            }
+
+        </div>
+
+        <div class="action">
+            <button (click)="randomPokemon()">run</button>
+            <!-- <button routerLink="/layout/pokedex">run</button> -->
+            <!-- <a routerLink="/layout/pokedex">pokedex</a> -->
+            <button (click)="capturePokemon()">catch</button>
+        </div>
+    </div>
+
+    <div class="message">
+        @if (message()) {
+        <p>{{message()}}</p>
+        }
+    </div>
+</main>

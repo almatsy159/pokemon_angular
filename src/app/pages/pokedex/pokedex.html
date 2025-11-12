@@ -1,0 +1,152 @@
+<div class="banque-container">
+
+    <div class="bank-section">
+        <header class="pokedex-header">
+            <h1>📖 Pokédex</h1>
+            <div class="progress-bar">
+                <div class="progress" [style.width.%]="completionPercentage()"></div>
+            </div>
+            <p class="progress-text">
+                {{ gameService.totalCaptured() }}/151 capturés ({{ completionPercentage() }}%)
+            </p>
+        </header>
+
+        <div class="filters">
+            <input type="search" [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()"
+                placeholder="Rechercher un Pokémon..." />
+
+            <div class="filter-buttons">
+                <button [class.active]="filterMode() === 'all'" (click)="filterMode.set('all')">
+                    Tous
+                </button>
+                <button [class.active]="filterMode() === 'captured'" (click)="filterMode.set('captured')">
+                    Capturés
+                </button>
+                <button [class.active]="filterMode() === 'not-captured'" (click)="filterMode.set('not-captured')">
+                    Non capturés
+                </button>
+                <div>
+                    <mat-select [(ngModel)]="type" (ngModelChange)="onTypeChange($event)" placeholder="select a type"
+                        name="type" id="type" [value]="type()">types
+                        <mat-option (click)="type.set('')" value="">None</mat-option>
+                        <!-- <mat-option (click)="type.set('Plante')" value="plante">plante</mat-option>
+                        <mat-option (click)="type.set('Feu')" value="Feu">feu</mat-option> -->
+                        @for(t of types();track $index){
+                            <mat-option (click)="type.set(t)" value={{t}}>{{t}}</mat-option>
+
+                        }
+                    </mat-select>
+                    
+                </div>
+                </div>
+                <p>catched by type @if(type()){{{type()}}}@else{all} : {{catch_by_type()}}/{{number_of_type()}}</p>
+                
+                <!-- <button [class.active]="filterMode() === 'type'" (click)="filterMode.set('type')">Type</button> -->
+                
+            
+        </div>
+
+        @if (loading()) {
+        <p class="loading">Chargement du Pokédex...</p>
+        } @else {
+        <!-- Added cdkDropListConnectedTo to connect with all team slots -->
+        <div cdkDropList id="pokemon-grid" class="pokemon-grid"
+            [cdkDropListConnectedTo]="['team-slot-0', 'team-slot-1', 'team-slot-2', 'team-slot-3', 'team-slot-4', 'team-slot-5']"
+            [cdkDropListSortingDisabled]="true">
+            @for (pokemon of filteredPokemon(); track pokemon.id) {
+            <!-- Only make captured pokemon draggable -->
+            @if (isCaptured(pokemon.pokedexId)) {
+            <div cdkDrag [cdkDragData]="pokemon" class="pokedex-card captured" (click)="onPokemonClick(pokemon)">
+
+                <span class="pokedex-number">
+                    #{{ pokemon.pokedexId.toString().padStart(3, '0') }}
+                </span>
+
+                <img [src]="pokemon.image" [alt]="pokemon.name" />
+
+                <h3>{{ pokemon.name }}</h3>
+
+                <div class="types">
+                    @for (type of pokemon.apiTypes; track type.name) {
+                    <span class="type-badge" [attr.data-type]="type.name">
+                        {{ type.name }}
+                    </span>
+                    }
+                </div>
+
+                <span class="badge captured-badge">✓ Capturé</span>
+            </div>
+            } @else {
+            <!-- Non-captured pokemon are not draggable -->
+            <div class="pokedex-card" (click)="onPokemonClick(pokemon)">
+
+                <span class="pokedex-number">
+                    #{{ pokemon.pokedexId.toString().padStart(3, '0') }}
+                </span>
+
+                @if (isSeen(pokemon.id)) {
+                <img [src]="pokemon.image" [alt]="pokemon.name" class="captured" />
+                <h3>{{pokemon.name}}</h3>
+                }@else {
+                <img [src]="pokemon.image" [alt]="pokemon.name" class="not-captured" />
+                <h3>???</h3>
+                }
+
+                <div class="types"></div>
+
+                <span class="badge locked-badge">🔒</span>
+            </div>
+            }
+            }
+        </div>
+
+        @if (filteredPokemon().length === 0) {
+        <p class="no-results">Aucun Pokémon trouvé</p>
+        }
+        }
+    </div>
+
+    <div class="team-section">
+        <h2>⚔️ Équipe ({{ gameService.teamSize() }}/6)</h2>
+
+        <div class="team-slots">
+            @for (slot of [0,1,2,3,4,5]; track slot) {
+            <!-- Added unique IDs for each slot -->
+            <div cdkDropList [id]="'team-slot-' + slot" class="team-slot" [class.filled]="gameService.team()[slot]"
+                (cdkDropListDropped)="onDrop($event, slot)" [cdkDropListConnectedTo]="['pokemon-grid']"
+                (cdkDropListEntered)="highlightSlot(slot)" (cdkDropListExited)="unhighlightSlot(slot)">
+
+                @if (gameService.team()[slot]; as pokemon) {
+                <div class="pokemon-card" (click)="viewDetails(pokemon.id)">
+                    @if (slot === 0) {
+                    <span class="leader-badge">★ Leader</span>
+                    }
+                    <img [src]="pokemon.image" [alt]="pokemon.name" />
+                    <h4>{{ pokemon.name }}</h4>
+                    <div class="types">
+                        @for (type of pokemon.apiTypes; track type.name) {
+                        <span class="type-badge" [attr.data-type]="type.name">
+                            {{ type.name }}
+                        </span>
+                        }
+                    </div>
+                    <div class="actions">
+                        @if (slot > 0) {
+                        <button class="btn-move" (click)="moveUp($event, slot)">⬆️</button>
+                        }
+                        @if (slot < gameService.teamSize() - 1) { <button class="btn-move"
+                            (click)="moveDown($event, slot)">⬇️</button>
+                            }
+                            <button class="btn-remove" (click)="removeFromTeam($event, pokemon.id)">🗑️</button>
+                    </div>
+                </div>
+                } @else {
+                <div class="empty-slot">
+                    <p>Vide</p>
+                </div>
+                }
+            </div>
+            }
+        </div>
+    </div>
+</div>

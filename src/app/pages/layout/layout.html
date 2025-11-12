@@ -1,0 +1,47 @@
+<div class="game-layout">
+    <header class="game-header">
+        <div class="header-content">
+            <h1 class="logo">🎮 Pokémon Game</h1>
+
+            <nav class="nav-links">
+                <a routerLink="/layout/encounter">
+                    ⚔️ Rencontre
+                </a>
+                <a routerLink="/layout/pokedex">
+                    📖 Pokédex
+                </a>
+            </nav>
+
+            <div class="stats">
+                <div class="stat-badge">
+                    <span class="stat-icon">📊</span>
+                    <div class="stat-info">
+                        <span class="stat-label">Pokédex</span>
+                        <span class="stat-value">{{ gameService.totalCaptured() }}/151</span>
+                        <div class="mini-progress">
+                            <div class="mini-progress-bar" [style.width.%]="completionPercentage()"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-badge">
+                    <span class="stat-icon">⚔️</span>
+                    <div class="stat-info">
+                        <span class="stat-label">Équipe</span>
+                        <span class="stat-value">{{ gameService.teamSize() }}/6</span>
+                    </div>
+                </div>
+
+                <button class="btn-reset" (click)="resetGame()" routerLink="">
+                    🔄 Reset
+                </button>
+                <button class="btn-export" (click)="exportGame()">
+                    <img src="/export.svg" alt=""> Export </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="game-content">
+        <router-outlet />
+    </main>
+</div>

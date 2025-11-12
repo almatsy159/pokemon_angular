@@ -1,0 +1,42 @@
+<div class="content">
+    <h1>Choose your pokemon </h1>
+    <div class="starter-slots">
+
+        @for (pokemon of starter();track pokemon.id){
+        <!-- <div> -->
+        <!-- <li><a (click)="choosePokemon(pokemon.id)" routerLink="layout"></a>{{pokemon.name}}</li> -->
+        <!-- <li><button (click)="choosePokemon(pokemon.id)" routerLink="/layout" [value]='pokemon.name'><img [src]="pokemon.sprite"></button></li> -->
+        <!-- </div> -->
+        <div class="pokemon-card" (click)="choosePokemon(pokemon.id)" routerLink="/layout">
+
+            <img [src]="pokemon.image" [alt]="pokemon.name" />
+            <h4>{{ pokemon.name }}</h4>
+            <div class="types">
+                @for (type of pokemon.apiTypes; track type.name) {
+                <span class="type-badge" [attr.data-type]="type.name">
+                    {{ type.name }}
+                </span>
+                }
+            </div>
+        </div>
+        }
+
+
+    </div>
+    <button class="btn-export" (click)="importGame()"><img src="/import.svg" alt=""> Import</button>
+<input type="file" #fileInput accept="application/json" style="display:none" (change)="onFileSelected($event)" />
+
+</div>
+
+<!-- <div class="pokemon-card" (click)="choosePokemon(pokemon.id)">
+        
+                    <img [src]="pokemon.image" [alt]="pokemon.name" />
+                    <h4>{{ pokemon.name }}</h4>
+                    <div class="types">
+                        @for (type of pokemon.apiTypes; track type.name) {
+                        <span class="type-badge" [attr.data-type]="type.name">
+                            {{ type.name }}
+                        </span>
+                        }
+                    </div>
+                </div> -->

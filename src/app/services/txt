@@ -1,0 +1,8 @@
+arr = [0,1,2,3,4,5]
+idx = 2
+arr.slice(0,idx+1) = [0,1,2]
+arr.slice(index+1,arr.length) = [3,4,5]
+
+place("x",3)
+
+[0,1,2,"x",3,4,5]

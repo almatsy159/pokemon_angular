@@ -1,0 +1,144 @@
+<div class="content">
+    @if(pokemon()){
+    <div><button (click)="previousPage()"> Previous</button></div>
+
+    <div class="pokemon-card">
+
+        <div class="pokemon-info">
+            <div class="pokemon">
+                <div class="pokemon-basics">
+
+                    <h2>#{{pokemon()!.pokedexId}} {{pokemon()!.name}}</h2>
+                    <img [src]="pokemon()!.image" alt="">
+                </div>
+                <div class="pokemon-types">
+                    @for(t of pokemon()!.apiTypes;track $index){
+                    <img [src]="t.image" alt="">
+                    }
+                </div>
+            </div>
+            <!-- <p>{{pokemon()!.stats}}</p> -->
+            <div>
+                <div class="graph">
+                    <canvas #radar></canvas>
+                </div>
+
+                <ul>
+                    <li>
+                        <!-- health point : {{pokemon()!.stats!.HP}} -->
+                        <div class="stat">
+                            <span class="label">HP: {{pokemon()!.stats!.HP }}/255</span>
+
+                            <div class="bar-container">
+                                <div class="bar-fill" [style.width.%]="pokemon()!.stats!.HP"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <!-- attack : {{pokemon()!.stats!.attack}} -->
+                        <div class="stat">
+                            <span class="label">ATTACK: {{pokemon()!.stats!.attack }}/{{max_stat}}</span>
+
+                            <div class="bar-container">
+                                <div class="bar-fill" [style.width.%]="pokemon()!.stats!.attack"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <!-- defense : {{pokemon()!.stats!.defense}} -->
+                        <div class="stat"><span class="label">HP: {{pokemon()!.stats!.defense }}/{{max_stat}}</span>
+
+                            <div class="bar-container">
+                                <div class="bar-fill" [style.width.%]="pokemon()!.stats!.defense"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <!-- special attack : {{pokemon()!.stats!.special_attack}} -->
+                        <div class="stat"><span class="label">SP ATK: {{pokemon()!.stats!.special_attack
+                                }}/{{max_stat}}</span>
+
+                            <div class="bar-container">
+                                <div class="bar-fill" [style.width.%]="pokemon()!.stats!.special_attack"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <!-- special defense: {{pokemon()!.stats!.special_defense}} -->
+                        <div class="stat"><span class="label">SP DEF: {{pokemon()!.stats!.special_defense
+                                }}/{{max_stat}}</span>
+
+                            <div class="bar-container">
+                                <div class="bar-fill" [style.width.%]="pokemon()!.stats!.special_defense"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <!-- speed : {{pokemon()!.stats!.speed}} -->
+                        <div class="stat"><span class="label">Speed: {{pokemon()!.stats!.speed }}/{{max_stat}}</span>
+
+                            <div class="bar-container">
+                                <div class="bar-fill" [style.width.%]="pokemon()!.stats!.speed"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- @for(s of pokemon()!.stats;track $index){
+        <li><p>{{s.name}}</p> : <p>{{s.value}}</p> </li>
+    } -->
+
+                </ul>
+            </div>
+
+
+        </div>
+        <div class="pokemon-others">
+            <div class="info">
+                <div class="multiplier">
+                    <div class="resistances">
+                        <h4>resistances</h4>
+                        <!-- {{resistances()}} -->
+                        <!-- @for (r of resistances();track $index){
+                <p>{{r.name}} {{r.damage_multiplier}} {{r.damage_relation}} -->
+                        <!-- <img [src]="types().find(t=>t.name==r.name).image" alt=""> -->
+                        <!-- </p> }-->
+                        @for (r of res_images();track $index){
+                        <img [src]="r![1]" alt="">
+                        }
+                    </div>
+                    <div class="vulnerabilities">
+                        <h4>vulnerabilities</h4>
+                        <!-- {{vulnerabilities()}} -->
+                        @for (v of vul_images();track $index){
+                        <img [src]="v![1]" alt="">
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="actions">
+                <h3>Actions : </h3>
+                @if(isCaptured(pokemon()!.id)){
+                @if (inTeam(pokemon()!.id)){
+                <!-- should call an add/remove from team function ! -->
+                <button (click)="gameService.removeFromTeam(pokemon()!.id)"> remove from team</button>
+                }@else {
+                <button (click)="gameService.addToTeam(pokemon()!.id)"> add to team</button>
+                }
+                }@else {
+                <button disabled> add to team</button>
+                }
+                <button routerLink="/layout/pokedex">Back</button>
+                <button (click)="toTest()">test</button>
+
+
+            </div>
+        </div>
+
+    </div>
+    <div><button (click)="nextPage()">Next</button></div>
+
+
+    }
+</div>
