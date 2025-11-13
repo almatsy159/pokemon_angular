@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class Game {
   team = signal<IPokemon[]>([])
   teamSize = computed(() => this.team().length)
+  teamHealthPoint = signal<number[]>([])
 
   apiService = inject(PokemonApi)
   pokemonToAdd = signal<IPokemon | null>(null)
@@ -21,13 +22,15 @@ export class Game {
 
   allPokemon = this.apiService.getGenXPokemon()
   attempt = signal<number>(this.loadCpt())
+  current_gen = signal<number>(1)
 
   gameStorage = computed(()=>{
     const game = {
       captured : this.pokeBank().map(p=>p.id),
       team : this.team().map(p=>p.id),
       seen : this.pokemonSeen().map(p=>p.id),
-      attempt : this.attempt()
+      attempt : this.attempt(),
+      team_hp : this.teamHealthPoint()
     }
     return game
   })
@@ -78,11 +81,13 @@ export class Game {
     this.team.update(team => [...team, p!])}
 
     this.storeTeam()
+    this.updateTeamHP()
   }}
 
   removeFromTeam(id: number) {
     this.team.update(team => team.filter(p => p.id != id))
     this.storeTeam()
+    this.updateTeamHP()
   }
 
   isCaptured() { }
@@ -93,7 +98,9 @@ export class Game {
     this.pokeBank.set([])
     this.pokemonSeen.set([])
     this.attempt.set(0)
+    this.teamHealthPoint.set([])
     this.storeGame()
+
 
   }
     swapLastAndFirst(){
@@ -110,7 +117,8 @@ export class Game {
       captured : this.pokeBank(),
       team : this.team(),
       seen : this.pokemonSeen(),
-      attempt : this.attempt()
+      attempt : this.attempt(),
+      team_hp : this.teamHealthPoint()
     }
   }
 
@@ -121,6 +129,7 @@ export class Game {
     this.storeSeen()
     this.storeTeam()
     this.storeAttempt()
+    this.storeHP()
   }
 
   storeCaptured(){
@@ -135,6 +144,9 @@ export class Game {
   storeAttempt(){
     localStorage.setItem("attempt",JSON.stringify(this.gameStorage().attempt))
   }
+  storeHP(){
+    localStorage.setItem("team_hp",JSON.stringify(this.gameStorage().team_hp))
+  }
 
 
   isGameData(data:any){
@@ -145,6 +157,7 @@ export class Game {
   loadGame(data:IGame|null=null) {
     let bank = null
     let seen = null
+    let team_hp = null
     let attempt = 0
     if (data){
       //console.log("data to load : ",data)
@@ -158,6 +171,7 @@ export class Game {
         //console.log("bank : ",this.pokeBank())
         //console.log("bank length :",this.pokeBank().length)
         this.attempt.set(data.attempt)
+        this.teamHealthPoint.set(data.team_hp)
         this.storeGame()
         //return true
         this.router.navigate(["/layout/encounter"])
@@ -170,16 +184,20 @@ export class Game {
     if (team.length>0){
       //console.log(team)
       // can launch other setting
+      team_hp = this.loadHP()
       bank = this.loadBank()
       seen = this.loadSeen()
       attempt = this.loadCpt()
+      
 
-      if (bank && seen){
+      if (bank && seen && team_hp){
       // return true : meaning setting where found
       this.team.set(team)
+      this.teamHealthPoint.set(team_hp)
       this.pokeBank.set(bank)
       this.pokemonSeen.set(seen)
       this.attempt.set(attempt)
+      //this.teamHealthPoint.set(team_hp)
 
       return true}
       else{
@@ -188,6 +206,20 @@ export class Game {
       }
     }
     return false
+  }
+
+  loadHP(){
+    const team_hp_str = localStorage.getItem("team_hp")
+    let team_hp:number[] = []
+    let res :number[]= []
+    if (team_hp_str){
+      team_hp =JSON.parse(team_hp_str)
+      console.log("team_hp : ",team_hp)
+      res = team_hp.map(hp=>Number(hp))
+    }
+    console.log("res : ",res)
+    return res
+
   }
 
   loadTeam(){
@@ -259,5 +291,10 @@ export class Game {
   addToBank(pokemon:IPokemon){
     this.pokeBank.update(pokemons=>[...pokemons,pokemon])
     this.storeCaptured()
+}
+
+updateTeamHP(){
+  this.teamHealthPoint.set(this.team().map(p=>p.stats.HP))
+  this.storeHP()
 }
 }

@@ -12,7 +12,7 @@ export class PokemonApi {
   gen_start = 1
 
   total_gen = 151
-  starter_id = [this.gen_start + 0, this.gen_start + 3, 133]
+  starter_id = [this.gen_start + 0, this.gen_start + 3, this.gen_start+6]
   http = inject(HttpClient)
   url_gen = "https://pokebuildapi.fr/api/v1/pokemon/generation"
   url_id = "https://pokebuildapi.fr/api/v1/pokemon"

@@ -34,10 +34,10 @@
             @for (pokemon of gameService.team();track $index){
             <div class="poke-ball-mon">
                 @if(current_index() == $index){
-                <img class="pokeball" src="/open_ball_bg.png" alt="open_pokeball" title="{{pokemon.name}}">
+                <button ><img class="pokeball" src="/open_ball_bg.png"  alt="open_pokeball" title="{{pokemon.name}}"></button>
                 }@else{
-                <img class="pokeball" src="/closed_ball_bg.png" alt="close_pokeball" title="{{pokemon.name}}"
-                    (click)="changePokemon(pokemon.id)">
+                <button [disabled]="this.gameService.teamHealthPoint()[current_index()]>0?true:false"><img class="pokeball" src="/closed_ball_bg.png" alt="close_pokeball" title="{{pokemon.name}}"
+                    (click)="changePokemon(pokemon.id)"></button>
                 }
                 <img class="minipoke" [src]="pokemon.image" alt="">
             </div>
@@ -47,10 +47,11 @@
 
         <div class="action">
             <p> total attempt : {{attempt()}}</p>
-            <button (click)="randomPokemon()">run</button>
+            <button (click)="run()">run</button>
             <!-- <button routerLink="/layout/pokedex">run</button> -->
             <!-- <a routerLink="/layout/pokedex">pokedex</a> -->
             <button (click)="capturePokemon()">catch</button>
+            <button (click)="fightPokemon()">Fight</button>
         </div>
     </div>
 
@@ -71,6 +72,38 @@
             </div>
 
             <button (click)="close()">Fermer</button>
+        </div>
+    </div>
+    }
+    @if(isFighting()){
+    <div class="overlay">
+        <div class="popup">
+            <div class="fight">
+                <div class="poke-wild"><img [src]="this.pokemonToFight()!.image" alt="">
+                <div class="stat">
+                            <span class="label">HP: {{pokemonToFightHP()! }}/{{pokemonToFight()!.stats!.HP }}</span>
+
+                            <div class="bar-container">
+                                <div class="bar-fill" [style.width.%]="pokemonToFight()!.stats!.HP"></div>
+                            </div>
+                        </div></div>
+
+                
+            <div class="poke-team"><img [src]="this.gameService.team()[current_index()].image" alt="">
+            <div class="stat">
+                            <span class="label">HP: {{this.gameService.teamHealthPoint()[current_index()]}}/{{this.gameService.team()[current_index()].stats!.HP }}</span>
+
+                            <div class="bar-container">
+                                <div class="bar-fill" [style.width.%]="this.gameService.team()[current_index()].stats!.HP"></div>
+                            </div>
+                        </div></div>
+                
+            </div>
+
+            <button (click)="attackPokemon()">Attack</button>
+            <button (click)="catch()">Capture</button>
+            <button (click)="close2()">Close</button>
+            <button (click)="run()">Run</button>
         </div>
     </div>
     }

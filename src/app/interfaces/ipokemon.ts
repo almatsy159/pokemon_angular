@@ -49,5 +49,6 @@ export interface IGame {
     team : IPokemon[]
     seen : IPokemon[]
     attempt : number
+    team_hp : number[]
 }
 
